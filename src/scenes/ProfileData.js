@@ -44,12 +44,7 @@ export default class ProfileData extends Phaser.Scene {
         }).setOrigin(0, 0);
         console.log(SaveManager.getSlot());
 
-        this.add.text(width / 2 - 500, audioY + 50, `d`, {
-            fontSize: '28px',
-            color: '#64d5ff',
-            fontStyle: 'bold',
-            fontFamily: 'Arial, sans-serif'
-        }).setOrigin(0, 0);
+
         
         const eStats = [
             `Total Gold: ${this.stats.totalGold}`,

@@ -45,6 +45,30 @@ export const AssetConfig = {
             path: 'assets/tower/TowerIcon/Promachus_Icon.png'
         },
         {
+            name: 'Kitsune_Icon',
+            type: 'image',
+            path: 'assets/tower/TowerIcon/Kitsune_Icon.png'
+        },
+        {
+            name: 'Satyr_Icon',
+            type: 'image',
+            path: 'assets/tower/TowerIcon/Satyr_Icon.png'
+        },
+        {
+            name: 'Kitsune_charge',
+            type: 'spritesheet',
+            path: 'assets/Abilities/Kitsune_charge.png',
+            frameWidth: 64,
+            frameHeight: 64
+        },
+        {
+            name: 'Satyr_leaf',
+            type: 'spritesheet',
+            path: 'assets/Abilities/Satyr_leaf.png',
+            frameWidth: 64,
+            frameHeight: 64
+        },
+        {
             name: 'Pedestal',
             type: 'image',
             path: 'assets/Tower Placement/tower_placement.png'

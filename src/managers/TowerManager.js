@@ -5,7 +5,9 @@ export default class TowerManager {
     static physicalData = [
         ['Izanami', 10, 2, 1.2, 2, 14],
         ['Susanoo', 5, 3, 0.6, 6, 14],
-        ['Promachus', 20, 3, 2.5, 3, 12]
+        ['Promachus', 20, 3, 2.5, 3, 12],
+        ['Kitsune', 15, 2.5, 1, 4, 10],
+        ['Satyr', 18, 2.5, 0.8, 3, 8]
     ];
 
     static airData = [];
@@ -25,7 +27,7 @@ export default class TowerManager {
         this.selectedTower = null;
 
         // Available tower index list
-        this.towerIndex = ['p0', 'p1', 'p2'];
+        this.towerIndex = ['p0', 'p1', 'p2', 'p3', 'p4'];
     }
 
     getStatsByIndex(indexStr) {
@@ -156,9 +158,14 @@ export default class TowerManager {
     preloadAssets() {
         // Load tower sprites and icons
         this.constructor.physicalData.forEach(([name]) => {
-            this.scene.load.spritesheet(name, `assets/tower/${name}.png`, { frameWidth: 64, frameHeight: 64 });
+            let frameWidth = 64, frameHeight = 64;
+            if (name === 'Kitsune') { frameWidth = 82; frameHeight = 81; }
+            else if (name === 'Satyr') { frameWidth = 64; frameHeight = 75; }
+            this.scene.load.spritesheet(name, `assets/tower/${name}.png`, { frameWidth, frameHeight });
             this.scene.load.image(`${name}_Icon`, `assets/tower/TowerIcon/${name}_Icon.png`);
         });
+        this.scene.load.spritesheet('Kitsune_charge', 'assets/Abilities/Kitsune_charge.png', { frameWidth: 64, frameHeight: 64 });
+        this.scene.load.spritesheet('Satyr_leaf', 'assets/Abilities/Satyr_leaf.png', { frameWidth: 64, frameHeight: 64 });
     }
 
     createProjectileAnimations() {
@@ -180,6 +187,28 @@ export default class TowerManager {
                 key: promachusKey,
                 frames: this.scene.anims.generateFrameNumbers('Promachus_fire', { start: 0, end: 5 }),
                 frameRate: 12,
+                repeat: -1
+            });
+        }
+
+        // Kitsune charge projectile animation
+        const kitsuneKey = 'Kitsune_charge_projectile';
+        if (!this.scene.anims.exists(kitsuneKey)) {
+            this.scene.anims.create({
+                key: kitsuneKey,
+                frames: this.scene.anims.generateFrameNumbers('Kitsune_charge', { start: 0, end: 10 }),
+                frameRate: 10,
+                repeat: -1
+            });
+        }
+
+        // Satyr leaf projectile animation
+        const satyrKey = 'Satyr_leaf_projectile';
+        if (!this.scene.anims.exists(satyrKey)) {
+            this.scene.anims.create({
+                key: satyrKey,
+                frames: this.scene.anims.generateFrameNumbers('Satyr_leaf', { start: 0, end: 10 }),
+                frameRate: 10,
                 repeat: -1
             });
         }

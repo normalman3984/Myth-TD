@@ -16,8 +16,8 @@ export default class Tower extends Phaser.GameObjects.Sprite {
         this.damageDealt = false;
 
         scene.add.existing(this);
-        // Scale towers
-        const scale = this.name === 'Promachus' ? 1 : 2;
+        // Scale towers (Kitsune is 82x81, Promachus is 64x64, Satyr is 64x75, others are standard)
+        const scale = this.name === 'Promachus' ? 1 : (this.name === 'Kitsune' ? 0.9 : (this.name === 'Izanami' ? 2 : (this.name === 'Susanoo' ? 2 : 0.9)));
         this.setDepth(10).setScale(scale).play(`${this.name}_idle`);
 
         // Reset tower after attack animation finishes
@@ -46,8 +46,6 @@ export default class Tower extends Phaser.GameObjects.Sprite {
         // Scale delta by game speed multiplier
         const gameSpeedScale = this.scene.timeManager?.getScale() || 1;
         const scaledDelta = delta * gameSpeedScale;
-        
-        // Accumulate elapsed time since last attack
         this.timeSinceLastAttack += scaledDelta;
 
         // Start attack if cooldown is ready AND enemy in range
@@ -57,7 +55,7 @@ export default class Tower extends Phaser.GameObjects.Sprite {
         }
 
         // Direct-damage towers (non-projectile) - only if enemy exists
-        if (this.isAttacking && enemy && !this.damageDealt && this.name !== 'Susanoo' && this.name !== 'Promachus') {
+        if (this.isAttacking && enemy && !this.damageDealt && this.name !== 'Susanoo' && this.name !== 'Promachus' && this.name !== 'Kitsune' && this.name !== 'Satyr') {
             enemy.takeDamage(this.damage);
             this.damageDealt = true;
         }
@@ -85,8 +83,8 @@ export default class Tower extends Phaser.GameObjects.Sprite {
         this.play(`${this.name}_attack`);
         this.scene.audioManager?.playTowerAttack();
         
-        // Projectile attacks (Susanoo and Promachus)
-        if (this.name === 'Susanoo' || this.name === 'Promachus') this.fireProjectile(enemy);
+        // Projectile attacks (Susanoo, Promachus, Kitsune, and Satyr)
+        if (this.name === 'Susanoo' || this.name === 'Promachus' || this.name === 'Kitsune' || this.name === 'Satyr') this.fireProjectile(enemy);
     }
 
     fireProjectile(target) {
@@ -103,6 +101,16 @@ export default class Tower extends Phaser.GameObjects.Sprite {
             animKey = 'Promachus_fire_projectile';
             speed = 400;
             scale = 4.5;
+        } else if (this.name === 'Kitsune') {
+            spriteKey = 'Kitsune_charge';
+            animKey = 'Kitsune_charge_projectile';
+            speed = 350;
+            scale = 3.5;
+        } else if (this.name === 'Satyr') {
+            spriteKey = 'Satyr_leaf';
+            animKey = 'Satyr_leaf_projectile';
+            speed = 300;
+            scale = 3.5;
         } else {
             return;
         }

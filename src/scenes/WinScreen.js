@@ -34,6 +34,7 @@ export default class WinScreen extends Phaser.Scene {
             pHealth: playerHealth
         });
 
+        ProgressManager.completeLevel(levelNumber);
         StatsManager.incTotalGold(gainGold);
         StatsManager.incGoldSpent(spentGold);
 
